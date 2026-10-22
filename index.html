@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>福音開展蒙恩見證稿編輯器</title>
+  <link rel="stylesheet" href="./styles.css?v=20261022-1">
+  <script defer src="./vendor/docx.umd.js"></script>
+  <script defer src="./vendor/html2canvas.min.js"></script>
+  <script defer src="./vendor/jspdf.umd.min.js"></script>
+  <script defer src="./app.js?v=20261021-1"></script>
+</head>
+<body>
+<main class="app-shell">
+  <section class="editor-pane" aria-label="福音開展蒙恩見證稿欄位">
+    <div class="pane-heading">
+      <div><p class="eyebrow">臺灣福音工作全時間訓練壯年成全班</p><h1><span>福音開展</span><wbr><span>蒙恩見證稿編輯器</span></h1></div>
+      <button class="ghost-button" id="clearForm" type="button">清空</button>
+    </div>
+    <form id="testimonyForm" class="form-grid">
+      <label class="span-full"><span>稿件類型</span><select id="reportType" name="reportType"><option value="member">隊員一週開展蒙恩見證稿（約300字）</option><option value="team">全隊一週開展全隊蒙恩報導（約500字）</option></select></label>
+      <label class="span-full"><span>隊別</span><input id="team" name="team" placeholder="請輸入隊別"></label>
+      <label><span>第幾組</span><input id="group" name="group" placeholder="例如：03-02"></label>
+      <label><span>姓名</span><input id="name" name="name" autocomplete="name" placeholder="請輸入姓名"></label>
+      <label class="span-full"><span>第幾週</span><input id="week" name="week" inputmode="numeric" placeholder="例如：12"></label>
+      <label><span>開始日期</span><input id="startDate" name="startDate" type="date"></label>
+      <label><span>結束日期</span><input id="endDate" name="endDate" type="date"></label>
+      <label class="span-full"><span>蒙恩見證／全隊報導內容</span><textarea id="content" name="content" rows="18" placeholder="請輸入一週福音開展中的蒙恩見證或全隊報導"></textarea></label>
+    </form>
+    <p id="wordCount" class="help-text" aria-live="polite"></p>
+    <p class="help-text">Word 採固定圖片版面，請在此修改後重新下載。</p>
+    <p id="draftStatus" class="help-text" role="status"></p>
+    <div class="actions" aria-label="產生檔案"><button id="downloadDocx" type="button">產生 DOCX</button><button id="downloadPdf" type="button">產生 PDF</button><button id="shareDocx" type="button">分享 Word</button></div>
+  </section>
+  <section class="preview-pane" aria-label="預覽">
+    <div class="preview-toolbar"><h2>預覽</h2><span id="fileNamePreview"></span></div>
+    <div id="previewViewport" class="preview-viewport">
+      <article id="documentPreview" class="document-page"><div class="page-content">
+        <header class="doc-header"><p>臺灣福音工作全時間訓練壯年成全班</p><h2>福音開展蒙恩見證稿</h2></header>
+        <div class="report-options"><p><span id="memberChoice">☑</span> 隊員一週開展蒙恩見證稿（約300字）</p><p><span id="teamChoice">□</span> 全隊一週開展全隊蒙恩報導（約500字）</p></div>
+        <div class="meta-line"><span>隊別：<strong data-preview="team"></strong></span><span>第 <strong data-preview="group"></strong> 組</span><span>姓名 <strong data-preview="name"></strong></span><span>第 <strong data-preview="week"></strong> 週</span><span class="date-line"><strong data-preview="startDateText"></strong> 至 <strong data-preview="endDateText"></strong></span></div>
+        <div class="testimony-content" data-preview="content"></div>
+      </div></article>
+    </div>
+    <p class="help-text">預覽、PDF 與 Word 共用 A4 版面，內容超出一頁時會縮小以完整呈現。</p>
+  </section>
+</main>
+</body>
+</html>
+
+
