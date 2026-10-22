@@ -4,11 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>福音開展蒙恩見證稿編輯器</title>
-  <link rel="stylesheet" href="./styles.css?v=20261022-1">
+  <link rel="stylesheet" href="./styles.css?v=20261022-4">
   <script defer src="./vendor/docx.umd.js"></script>
   <script defer src="./vendor/html2canvas.min.js"></script>
   <script defer src="./vendor/jspdf.umd.min.js"></script>
-  <script defer src="./app.js?v=20261021-1"></script>
+  <script defer src="./app.js?v=20261022-4"></script>
 </head>
 <body>
 <main class="app-shell">
@@ -28,7 +28,7 @@
       <label class="span-full"><span>蒙恩見證／全隊報導內容</span><textarea id="content" name="content" rows="18" placeholder="請輸入一週福音開展中的蒙恩見證或全隊報導"></textarea></label>
     </form>
     <p id="wordCount" class="help-text" aria-live="polite"></p>
-    <p class="help-text">Word 採固定圖片版面，請在此修改後重新下載。</p>
+    <p class="help-text">Word 可直接編輯文字與表格。</p>
     <p id="draftStatus" class="help-text" role="status"></p>
     <div class="actions" aria-label="產生檔案"><button id="downloadDocx" type="button">產生 DOCX</button><button id="downloadPdf" type="button">產生 PDF</button><button id="shareDocx" type="button">分享 Word</button></div>
   </section>
@@ -42,7 +42,7 @@
         <div class="testimony-content" data-preview="content"></div>
       </div></article>
     </div>
-    <p class="help-text">預覽、PDF 與 Word 共用 A4 版面，內容超出一頁時會縮小以完整呈現。</p>
+    <p class="help-text">預覽與 PDF 保留固定 A4 版面；Word 可直接編輯，長文會自動換頁。</p>
   </section>
 </main>
 </body>

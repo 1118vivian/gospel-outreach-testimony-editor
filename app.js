@@ -56,8 +56,41 @@
   async function createDocxBlob() {
     if (!window.docx) throw new Error("Word 套件尚未載入，請重新整理後再試。");
     const d = window.docx;
-    const canvas = await captureA4(2);
-    const doc = new d.Document({ title: "福音開展蒙恩見證稿", sections: [{ properties: { page: { size: { width: 11906, height: 16838 }, margin: { top: 0, right: 0, bottom: 0, left: 0 } } }, children: [new d.Paragraph({ spacing: { before: 0, after: 0, line: 1 }, children: [new d.ImageRun({ data: canvas.toDataURL("image/png"), transformation: { width: 793, height: 1122 }, floating: { horizontalPosition: { relative: d.HorizontalPositionRelativeFrom.PAGE, offset: 0 }, verticalPosition: { relative: d.VerticalPositionRelativeFrom.PAGE, offset: 0 } }, altText: { title: "福音開展蒙恩見證稿", description: "福音開展蒙恩見證稿編輯器產生的固定 A4 版面", name: "福音開展蒙恩見證稿" } })] })] }] });
+    const data = values();
+    const font = { ascii: "Microsoft JhengHei", hAnsi: "Microsoft JhengHei", eastAsia: "Microsoft JhengHei", cs: "Microsoft JhengHei" };
+    const paragraph = (text, options = {}) => new d.Paragraph({
+      alignment: options.alignment || d.AlignmentType.LEFT,
+      spacing: { before: 0, after: options.after ?? 0, line: options.line || 340, lineRule: d.LineRuleType.EXACT },
+      keepNext: false,
+      keepLines: false,
+      children: text.split(/\r?\n/).map((line, index) => new d.TextRun({
+        text: line, break: index ? 1 : undefined, font,
+        size: options.size || 26, bold: options.bold || false, snapToGrid: false,
+      })),
+    });
+    const tableWidth = 10706;
+    const border = { style: d.BorderStyle.SINGLE, size: 6, color: "C9D1D9" };
+    const contentBox = (text, height) => new d.Table({
+      width: { size: tableWidth, type: d.WidthType.DXA }, columnWidths: [tableWidth], layout: d.TableLayoutType.FIXED,
+      margins: { top: 100, bottom: 100, left: 140, right: 140 },
+      borders: { top: border, bottom: border, left: border, right: border },
+      rows: [new d.TableRow({ cantSplit: false, height: { value: height, rule: d.HeightRule.ATLEAST }, children: [new d.TableCell({ width: { size: tableWidth, type: d.WidthType.DXA }, verticalAlign: d.VerticalAlign.TOP, children: (text || "").split(/\r?\n/).map(line => paragraph(line)) })] })],
+    });
+    const doc = new d.Document({ title: "福音開展蒙恩見證稿",
+      styles: { default: { document: { run: { font, size: 26, color: "000000" }, paragraph: { spacing: { after: 0 } } } } },
+      sections: [{
+        properties: { verticalAlign: d.VerticalAlign.TOP, page: { size: { width: 11906, height: 16838 }, margin: { top: 600, right: 600, bottom: 600, left: 600 } } },
+        children: [
+          paragraph("臺灣福音工作全時間訓練壯年成全班", { bold: true, size: 28, alignment: d.AlignmentType.CENTER, line: 360, after: 40 }),
+          paragraph("福音開展蒙恩見證稿", { bold: true, size: 38, alignment: d.AlignmentType.CENTER, line: 460, after: 100 }),
+          paragraph(`${data.reportType === "member" ? "☑" : "□"} 隊員一週開展蒙恩見證稿（約300字）`, { size: 22, alignment: d.AlignmentType.CENTER, line: 280 }),
+          paragraph(`${data.reportType === "team" ? "☑" : "□"} 全隊一週開展全隊蒙恩報導（約500字）`, { size: 22, alignment: d.AlignmentType.CENTER, line: 280, after: 80 }),
+          paragraph(`隊別：${data.team}    第 ${data.group} 組    姓名 ${data.name}    第 ${data.week} 週`, { size: 24, alignment: d.AlignmentType.CENTER, line: 300, after: 20 }),
+          paragraph(`${dateText(data.startDate)} 至 ${dateText(data.endDate)}`, { size: 24, alignment: d.AlignmentType.CENTER, line: 300, after: 80 }),
+          contentBox(data.content, 9000),
+        ],
+      }],
+    });
     return d.Packer.toBlob(doc);
   }
 
